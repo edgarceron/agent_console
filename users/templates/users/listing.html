@@ -1,0 +1,87 @@
+{% extends 'maingui/index.html' %}
+{% load static %}
+{% block title %}
+    Listado de usuarios
+{% endblock %}
+
+{% block topTitle %}
+    Listado de usuarios
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-info" href="{% url 'create_user' %}"><i class="fas fa-fw fa-plus"></i>Crear usuario</a>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <table id="listing" class="table table-striped table-bordered w-100" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Correo</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="successModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Unos segundos por favor</h5>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert" id="modalMessage">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                Refrescando...
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="cautionModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Atención</h5>
+            </div>
+            <div class="modal-body">
+                    ¿Esta seguro de que quiere eliminar el usuario con id <i id="idi"></i>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirm_button">Si</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+<script>
+    var url = "{% url 'data_list_user' %}";
+    var update_url = "{% url 'update_user_agent' user_id=0 %}";
+    var delete_url = "{% url 'delete_user' user_id=0 %}";
+    var toggle_url = "{% url 'toggle_user' user_id=0 %}";
+    update_url = update_url.slice(0, -1);
+    delete_url = delete_url.slice(0, -1);
+    toggle_url = toggle_url.slice(0, -1);
+
+</script>
+<script src="{% static 'maingui/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'users/js/app/listing.js' %}"></script>
+{% endblock %}
+
+{% block ready %}
+    
+{% endblock %}

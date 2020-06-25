@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}Pagína Principal{% endblock %}</title>
+    {% load static %}
+    {% include "./cssload.html" %}
+    {% include "./jscriptload.html" %}
+    <!-- Bootstrap core JavaScript-->
+
+</head>
+
+<body id="page-top" class="text-center">
+        <form class="form-signin">
+            <img class="mb-4" src="{% static 'maingui/img/letra_m.svg' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Por favor ingrese sus datos</h1>
+            <label for="inputEmail" class="sr-only">Correo electrónico</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Correo electrónico" required="" autofocus="">
+            <label for="inputPassword" class="sr-only">Contraseña</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required="">
+            <div class="checkbox mb-3">
+            <label>
+                <input id="inputRemember" type="checkbox" value="remember-me"> Recuerdame
+            </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" id="ingresar">Ingresar</button>
+            <p class="mt-5 mb-3 text-muted">© 2019-{{year}}</p>
+        </form>
+    </div>
+    <!-- Page level custom scripts -->
+    {% block javascript %}
+    {% endblock %}
+
+</body>
+<script src='{% static "maingui/js/app/FormFunctions.js" %}'></script>
+<script src="{% static 'maingui/js/app/login-form.js' %}"></script>
+<script src='{% static "maingui/js/app/SoftNotification.js" %}'></script>
+
+<script>
+    $( document ).ready(function() {
+        login_url = "{% url 'login_user' %}";
+        index_url = "{% url 'index' %}";
+    });
+</script>
+</html>

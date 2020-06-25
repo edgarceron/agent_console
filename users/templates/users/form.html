@@ -1,0 +1,129 @@
+{% extends 'maingui/index.html' %}
+{% load static %}
+{% block title %}
+{{ action }} usuario
+{% endblock %}
+
+{% block topTitle %}
+{{ action }} usuario
+{% endblock %}
+{% block content %}
+<div class="row">
+    <form action="" class="needs-validation w-100" novalidate>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="usernameInput">Correo</label>
+                    <input type="text" class="form-control appform" id="usernameInput" required>
+                    <div class="valid-feedback" id='usernameValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'usernameInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="passwordInput">Contraseña</label>
+                    <input type="password" class="form-control appform" id="passwordInput" required>
+                    <div class="valid-feedback" id='passwordValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'passwordInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nameInput">Nombres</label>
+                    <input type="text" class="form-control appform" id="nameInput" required>
+                    <div class="valid-feedback" id='nameValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'nameInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="lastnameInput">Apellidos</label>
+                    <input type="text" class="form-control appform" id="lastnameInput" required>
+                    <div class="valid-feedback" id='lastnameValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'lastnameInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-md-6'>
+                <div class='form-group'>
+                    <label for='profileInput'>Perfil</label>
+                    <select class='form-control appform' id='profileInput'>
+                        <option value="">Ningun perfil</option>
+                    </select>
+                    <div class="valid-feedback" id='profileValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'profileInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="checkboxgroup">Estado</label>
+                <div class="custom-control custom-checkbox" id="checkboxgroup">
+                    <input class="custom-control-input" type="checkbox" value="" id="activeInput">
+                    <label class="custom-control-label" for="activeInput">Activo</label>
+                    <div class="valid-feedback" id='activeValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'activeInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+        </div>
+
+        {% block additional_fields %}
+
+        {% endblock additional_fields %}
+        <div class='row'>
+            <div class='col-md-6'>
+                <div class='form-group'>
+                    <button type="button" class="btn btn-primary" id="saveButton">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="successModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Unos segundos por favor</h5>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert" id="modalMessage">
+                    Guardado con exito!
+                </div>
+            </div>
+            <div class="modal-footer">
+                Redirigiendo...
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'maingui/js/app/FormFunctions.js' %}"></script>
+<script src="{% static 'maingui/vendor/bootsrap-select/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'users/js/app/form.js' %}"></script>
+
+<script>
+    id = {{ id }};
+    listing_url = "{% url 'listing_user' %}";
+    add_url = "{% url 'add_user' %}";
+    picker_search_profile_url = "{% url 'picker_search_profile' %}";
+    get_profile_url = "{% url 'get_profile' profile_id=0 %}";
+    get_url = "{% url 'get_user' user_id=0 %}";
+    replace_url = "{% url 'replace_user' user_id=0 %}";
+    replace_url = replace_url.slice(0, -1);
+    get_url = get_url.slice(0, -1);
+    get_profile_url = get_profile_url.slice(0, -1);
+</script>
+{% block additional_javascript %}
+
+{% endblock additional_javascript %}
+
+{% endblock javascript %}
+
+
+    

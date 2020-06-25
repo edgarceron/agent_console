@@ -1,0 +1,28 @@
+{% extends 'users/form.html' %}
+{% load static %}
+{% block additional_fields %}
+
+        <div class="row">
+            <div class='col-md-6'>
+                <div class='form-group'>
+                    <label for='agentInput'>Agente</label>
+                    <select class='form-control appform' id='agentInput'>
+                        <option value="">Sin asignar</option>
+                    </select>
+                    <div class="valid-feedback" id='agentValid'>Valid.</div>
+                    <div class="invalid-feedback" id = 'agentInvalid'>Please fill out this field.</div>
+                </div>
+            </div>
+        </div>
+{% endblock additional_fields %}
+
+{% block additional_javascript %}
+    <!-- This script may replace things from the user form -->
+    <script src="{% static 'agent_console/js/app/form.js' %}"></script>
+    <script>
+        set_user_agent_url = "{% url 'set_user_agent' %}";
+        get_agent_url = "{% url 'get_agent' user_id=0 %}";
+        pircker_search_agent_url = "{% url 'picker_search_agent' %}";
+        get_agent_url = get_agent_url.slice(0, -1);
+    </script>
+{% endblock additional_javascript %}

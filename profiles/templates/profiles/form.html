@@ -1,0 +1,105 @@
+{% extends 'maingui/index.html' %}
+{% load static %}
+{% block title %}
+    {{ action }} perfil
+{% endblock %}
+{% block topTitle %}
+    {{ action }} perfil
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <form action="" class="needs-validation w-100" novalidate>
+            <div class="row">
+                <div class='col-md-6'>
+                    <div class='form-group'>
+                        <label for='nameInput'>Nombre del perfil</label>
+                        <input type='text' class='form-control appform' id='nameInput'>
+                        <div class='valid-feedback' id='nameValid'>Correcto.</div>
+                        <div class='invalid-feedback' id = 'nameInvalid'>Debe ingresar un nombre valido.</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="checkboxgroup">Estado</label>
+                    <div class="custom-control custom-checkbox" id="checkboxgroup">
+                        <input class="custom-control-input" type="checkbox" value="" id="activeInput">
+                        <label class="custom-control-label" for="activeInput">Activo</label>
+                        <div class="valid-feedback" id='activeValid'>Valid.</div>
+                        <div class="invalid-feedback" id = 'activeInvalid'>Please fill out this field.</div>
+                    </div>
+                </div>
+            </div>
+
+            {% for app in result %}
+            <div class="card">
+                <div class="card-header">
+                  {{ app.label }}
+                </div>
+                <ul class="list-group list-group-flush">
+                {% for action in app.actions %}
+                    <li class="list-group-item">
+                        <div class="custom-control custom-checkbox">
+                            <input 
+                                class="custom-control-input action_check" 
+                                type="checkbox" 
+                                value="" 
+                                id="actionInput{{ action.id }}"
+                                data-id="{{ action.id }}"
+                            >
+                            <label class="custom-control-label" for="actionInput{{ action.id }}">{{ action.label }}</label>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+
+            <div class='row'>
+                <div class='col-md-6'>
+                    <div class='form-group'>
+                        <button type="button" class="btn btn-primary" id="saveButton">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class='modal fade' tabindex='-1' role='dialog' id='successModal'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h5 class='modal-title' id='modalTitle'>Unos segundos por favor</h5>
+                </div>
+                <div class='modal-body'>
+                    <div class='alert alert-success' role='alert' id='modalMessage'>
+                        Guardado con exito!
+                    </div>
+                </div>
+                <div class='modal-footer'>
+                    Redirigiendo...
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascript %}
+    <script src='{% static "maingui/js/app/FormFunctions.js" %}'></script>
+    <script src="{% static 'profiles/js/app/form.js' %}"></script>
+    <script>
+        $( document ).ready(function() {
+            id = {{ id }};
+            listing_url = "{% url 'listing_profile' %}";
+            add_url = "{% url 'add_profile' %}";
+            get_url = "{% url 'get_profile' profile_id=0 %}";
+            replace_url = "{% url 'replace_profile' profile_id=0 %}";
+            get_url = get_url.slice(0, -1);
+            replace_url = replace_url.slice(0, -1);
+
+            if(id != 0){
+                getData(id);
+            }
+        });
+    </script>
+{% endblock %}
+

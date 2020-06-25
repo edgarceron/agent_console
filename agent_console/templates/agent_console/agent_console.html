@@ -1,0 +1,52 @@
+{% extends 'maingui/index.html' %}
+{% load static %}
+{% block title %}
+Consola de agente
+{% endblock %}
+
+{% block topTitle %}
+<span class="text-light">Consola de agente</span> 
+{% endblock %}
+{% block bg_class %}
+    bg-dark
+{% endblock bg_class %}
+
+{% block content %}
+
+<div class="card text-center">
+    <div class="card-header text-dark">
+        <h3>Estado del agente: <span id="lblStatus">......</span></h3>
+    </div>
+    <div class="card-body bg-dark text-light">
+        <h4><span id="lblMessage">Cargando...</span></h4>
+    </div>
+  </div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="successModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Unos segundos por favor</h5>
+            </div>
+            <div class="modal-body">
+                <p>Llamada entrante de: <span id="lblPhone">3176483290</span></p>
+                <p>Número de cedula ingresado: <span id="lblCedula">1144166082</span></p>
+            </div>
+            <div class="modal-footer">
+                <h3>Redirigiendo...</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'agent_console/js/app/agent_console.js' %}"></script>
+<script>
+    var id_agent = {{ id_agent }};
+    agent_state_url = "{% url 'agent_state' %}";
+    get_crm_url_url = "{% url 'get_crm_url' %}";
+</script>
+{% endblock %}
