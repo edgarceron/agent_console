@@ -7,9 +7,11 @@
 """
 import importlib
 from django.core.management.base import BaseCommand
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
 from django.conf import settings
-from profiles.models import Action, App
+from profiles.models import Action, App, Profile, ProfilePermissions
 from profiles.serializers import ActionSerializer, AppSerializer
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -70,11 +72,56 @@ class Command(BaseCommand):
         for action in registered_actions:
             data = {"name": action["name"], "label": action["label"], "app": app_id}
             action_serializer = ActionSerializer(data=data)
-            if(action_serializer.is_valid()):
+            if action_serializer.is_valid():
                 action_serializer.save()
-                self.stdout.write("Se creo la acción " + action["name"] + " para el modulo " + app_name)
+                self.stdout.write(
+                    "Se creo la acción " + action["name"] + " para el modulo " + app_name)
             else:
-                self.stdout.write("Ya existe la acción " + action["name"] + " para el modulo " + app_name)
+                self.stdout.write(
+                    "Ya existe la acción " + action["name"] + " para el modulo " + app_name)
+
+    @staticmethod
+    def create_admin_profile():
+        try:
+            admin_profile = Profile.objects.get(name="ADMINISTRADOR")
+        except Profile.DoesNotExist:
+            admin_profile = Profile()
+            admin_profile.name = "ADMINISTRADOR"
+            admin_profile.active = True
+            admin_profile.save()
+
+        actions = Action.objects.all()
+        for action in actions:
+            try:
+                permission = ProfilePermissions.objects.get(
+                    profile=admin_profile.id,
+                    action=action.id
+                )
+            except ProfilePermissions.DoesNotExist:
+                permission = ProfilePermissions()
+                permission.profile = admin_profile
+                permission.action = action
+
+            permission.permission = True
+            permission.save()
+        Command.create_admin_user(admin_profile)
+
+    @staticmethod
+    def create_admin_user(profile):
+        try:
+            admin = User.objects.get(username="admin@agent.console")
+        except User.DoesNotExist:
+            admin = User()
+            admin.username = "admin@agent.console"
+            hasher = PBKDF2PasswordHasher()
+            password = hasher.encode("admin", "Wake Up, Girls!")
+            admin.password = password
+            admin.active = True
+            admin.profile = profile
+            admin.name = "ADMINISTRADOR"
+            admin.lastname = "SISTEMA"
+            admin.need_password = False
+            admin.save()
 
     def handle(self, *args, **options):
         registered_apps = App.objects.all()
@@ -91,4 +138,5 @@ class Command(BaseCommand):
 
             self.delete_removed_actions(registered_actions, app_id, app_name)
             self.create_actions(registered_actions, app_id, app_name)
+            self.create_admin_profile()
     
