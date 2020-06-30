@@ -20,6 +20,8 @@ def get_actions():
         {"name": "picker_search_user", "label": "Webservice picker de usuarios"},
         {"name": "list_user", "label": "Webservice del listado de usuarios"},
         {"name": "toggle_user", "label": "Webservice para cambiar estado del usuario"},
+        {"name": "get_own", "label": "Webservice obtener datos del usuario logeado actualemente"},
+        {"name": "replace_own", "label": "Webservice actualizar usuario logeado actualemente"},
     ]
     return actions
 
@@ -230,6 +232,68 @@ def logout(request):
     }
     return Response(data, status=status.HTTP_200_OK, content_type='application/json')
 
+@api_view(['POST'])
+def get_own(request):
+    """Gets own user info"""
+    permission_obj = PermissionValidation(request)
+    validation = permission_obj.validate('get_own')
+    if validation['status']:
+        user_obj = permission_obj.user
+        user_serializer = UserSerializer(user_obj)
+        user_data = user_serializer.data.copy()
+        del user_data['password']
+
+        data = {
+            "success":True,
+            "data":user_data
+        }
+    
+        return Response(
+            data,
+            status=status.HTTP_200_OK,
+            content_type='application/json'
+        )
+    return PermissionValidation.error_response_webservice(validation, request)
+
+@api_view(['PUT'])
+def replace_own(request):
+    "Tries to update an user and returns the result"
+    permission_obj = PermissionValidation(request)
+    validation = permission_obj.validate('replace_own')
+    if validation['status']:
+        user_obj = permission_obj.user
+        data = request.data.copy()
+        password = data['password']
+        confirm = data['confirm']
+        data['profile'] = user_obj.profile.id
+        del data['confirm']
+        if password == "" and confirm == "":
+            data['password'] = user_obj.password
+        else:
+            if password == confirm:
+                hasher = PBKDF2PasswordHasher()
+                data['password'] = hasher.encode(password, "Wake Up, Girls!")
+            else:
+                data['password'] = None
+        user_serializer = UserSerializer(user_obj, data=data)
+
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(
+                {"success":True},
+                status=status.HTTP_200_OK,
+                content_type='application/json'
+            )
+
+        data = error_data(user_serializer)
+        for i in range(0, len(data['Error']['details'])):
+            if data['Error']['details'][i]['field'] == 'password':
+                data['Error']['details'][i]['field'] = 'passwordConfirm'
+                data['Error']['details'][i]['message'] = 'Las contraseñas no coinciden.'
+                break
+        return Response(data, status=status.HTTP_400_BAD_REQUEST, content_type='application/json')
+    return PermissionValidation.error_response_webservice(validation, request)
+
 def error_data(user_serializer):
     """Return a common JSON error result"""
     error_details = []
@@ -245,4 +309,3 @@ def error_data(user_serializer):
         }
     }
     return data
-    

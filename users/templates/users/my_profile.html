@@ -1,0 +1,91 @@
+{% extends 'maingui/index.html' %}
+{% load static %}
+{% block title %}
+Mi perfil
+{% endblock %}
+
+{% block topTitle %}
+Mi perfil
+{% endblock %}
+{% block content %}
+<div class="row">
+    <form action="" class="needs-validation w-100" novalidate>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="usernameInput">Correo</label>
+                    <input type="text" class="form-control appform" id="usernameInput" required>
+                    <div class="valid-feedback" id='usernameValid'>Correcto.</div>
+                    <div class="invalid-feedback" id = 'usernameInvalid'>Por favor llene este campo.</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="passwordInput">Contraseña</label>
+                    <input type="password" class="form-control appform" id="passwordInput" required>
+                    <div class="valid-feedback" id='passwordValid'>Correcto.</div>
+                    <div class="invalid-feedback" id = 'passwordInvalid'>Por favor llene este campo.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="passwordConfirmInput">Confirmar contraseña</label>
+                    <input type="password" class="form-control appform" id="passwordConfirmInput" required>
+                    <div class="valid-feedback" id='passwordConfirmValid'>Correcto.</div>
+                    <div class="invalid-feedback" id = 'passwordConfirmInvalid'>Por favor llene este campo.</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nameInput">Nombres</label>
+                    <input type="text" class="form-control appform" id="nameInput" required>
+                    <div class="valid-feedback" id='nameValid'>Correcto.</div>
+                    <div class="invalid-feedback" id = 'nameInvalid'>Por favor llene este campo.</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="lastnameInput">Apellidos</label>
+                    <input type="text" class="form-control appform" id="lastnameInput" required>
+                    <div class="valid-feedback" id='lastnameValid'>Correcto.</div>
+                    <div class="invalid-feedback" id = 'lastnameInvalid'>Por favor llene este campo.</div>
+                </div>
+            </div>
+        </div>
+        {% block additional_fields %}
+
+        {% endblock additional_fields %}
+        <div class='row'>
+            <div class='col-md-6'>
+                <div class='form-group'>
+                    <button type="button" class="btn btn-primary" id="saveButton">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'maingui/js/app/FormFunctions.js' %}"></script>
+<script src="{% static 'maingui/vendor/bootsrap-select/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'users/js/app/my_profile_form.js' %}"></script>
+
+<script>
+    get_own_url = "{% url 'get_own' %}";
+    replace_own_url = "{% url 'replace_own' %}";
+</script>
+{% block additional_javascript %}
+
+{% endblock additional_javascript %}
+
+{% endblock javascript %}
+
+
+    

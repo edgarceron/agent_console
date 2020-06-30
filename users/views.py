@@ -1,5 +1,5 @@
 "Contains the views for the users app."
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .permission_validation import PermissionValidation
 
 def get_actions():
@@ -44,3 +44,17 @@ def listing_user(request):
             }
         )
     return PermissionValidation.error_response_view(validation, request)
+
+def view_my_profile(request):
+    """Return rendered template for own user info"""
+    permission_obj = PermissionValidation(request)
+    if permission_obj.login_session is not None:
+        user_id = permission_obj.user.id
+        return render(
+            request,
+            'users/my_profile.html',
+            {
+                'username': permission_obj.user.name,
+            }
+        )
+    return redirect('login')

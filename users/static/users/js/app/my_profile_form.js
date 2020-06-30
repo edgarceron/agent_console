@@ -1,28 +1,43 @@
+var id;
+var errorFields = [];
+
+saveSuccess = function(result){
+    if(result.success){
+        FormFunctions.resetFormErrors(errorFields);
+        errorFields = [];
+        SoftNotification.show("Datos actualizados correctamente");
+    }
+}
 
 function getValues(){
-    var values={
-        'REDIRECT_TIME':'',//$('#REDIRECT_TIMEInput').val(),
-        'CRM_URL':$('#CRM_URLInput').val(),
+    data = {
+        "name"    : $('#nameInput').val(),
+        "lastname": $('#lastnameInput').val(),
+        "username": $('#usernameInput').val(),
+        "password": $('#passwordInput').val(),
+        "confirm": $('#passwordConfirmInput').val(),
     }
-    return values;
+    return data;
 }
 
 function updateData(){
     if(!singleOperationRestriction){
         singleOperationRestriction = true;
         $.ajax({
-            url: replace_options_agent_console_url,
+            url: replace_own_url,
             method: 'PUT',
             async: false,
             dataType: 'json',
             data: getValues(),
             beforeSend: function(){},
             success: function(result){
-                if(result.success){
-                    SoftNotification.show("Opciones guardadas con exito");
-                }
+                saveSuccess(result);
             },
             error: function (request, status, error, result){
+                var details = request.responseJSON.Error.details;
+                FormFunctions.resetFormErrors(errorFields);
+                errorFields = [];
+                FormFunctions.setFormErrors(details);
             },
             complete: function(){
                 singleOperationRestriction = false;
@@ -31,9 +46,9 @@ function updateData(){
     }
 }
 
-function getData(user_id){
+function getData(){
     $.ajax({
-        url: get_options_agent_console_url,
+        url: get_own_url ,
         method: 'POST',
         async: false,
         dataType: 'json',
@@ -53,36 +68,25 @@ function getData(user_id){
     });
 }
 
-function autoGenerateUsers(){
-    $.ajax({
-        url: auto_generate_users_url,
-        method: 'POST',
-        async: false,
-        dataType: 'json',
-        data: {},
-        beforeSend: function(){},
-        success: function(result){
-            if(result.success){
-                SoftNotification.show(result.message);
-            }
-            else{
-                SoftNotification.show(result.message, "danger");
-            }
-        },
-        error: function (request, status, error){},
-        complete: function(){},
-    });
+function saveFunction(){
+    updateData(id);
 }
 
-
 $( document ).ready(function() {
+    
     $('#saveButton').click(function(){
-        updateData();
+        saveFunction();
     });
 
-    $('#generateButton').click(function(){
-        autoGenerateUsers();
-    });
+    $('#profileInput').selectpicker(
+        {
+            "liveSearch": true
+        }
+    );
+
+
+    $('#passwordInput').attr("placeholder", "Ingrese aquí una nueva contraseña");
+    $('#passwordConfirmInput').attr("placeholder", "Confirme su nueva contraseña");
 
     getData();
 });
