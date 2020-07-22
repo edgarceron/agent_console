@@ -123,33 +123,38 @@ class PermissionValidation():
             del request.session['loginsession']
             data = {
                 "error": 401,
-                "message": "Su sessión expiro por favor ingrese nuevamente"
+                "message": "Su sessión expiro por favor ingrese nuevamente",
+                "username": ""
             }
             return render(request, 'maingui/http_error.html', data, status=401)
 
         if validation['error'] == 'Not logged':
             data = {
                 "error": 401,
-                "message": "Debe ingresar antes de realizar esta solicitud"
+                "message": "Debe ingresar antes de realizar esta solicitud",
+                "username": ""
             }
             return render(request, 'maingui/http_error.html', data, status=401)
 
         if validation['error'] == 'Forbidden':
             data = {
                 "error": 403,
-                "message": "El usuario no tiene permisos para realizar esta acción"
+                "message": "El usuario no tiene permisos para realizar esta acción",
+                "username": ""
             }
             return render(request, 'maingui/http_error.html', data, status=403)
 
         if validation['error'] == 'Database error':
             data = {
                 "error": 500,
-                "message": "El usuario, perfil o acción no se encontraron en la base de datos"
+                "message": "El usuario, perfil o acción no se encontraron en la base de datos",
+                "username": ""
             }
             return render(request, 'maingui/http_error.html', data, status=500)
 
         data = {
             "error": 500,
-            "message": "No hay un mensaje para este error (" + validation['error'] + ")"
+            "message": "No hay un mensaje para este error (" + validation['error'] + ")",
+            "username": ""
         }
         return render(request, 'maingui/http_error.html', data, status=500)
