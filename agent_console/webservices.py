@@ -39,40 +39,46 @@ def set_user_agent(request):
         user_id = data['user']
         agent_id = data['agent']
 
-        try:
-            query = UserAgent.objects.filter(user=user_id)
-            if len(query) > 0:
-                for obj in query:
-                    model = obj
-                    if agent_id == "":
-                        model.delete()
-                        return Response(
-                            {"success":True, "message":"UserAgent deleted"},
-                            status=status.HTTP_200_OK,
-                            content_type='application/json')
-
-                    serializer = UserAgentSerializer(instance=model, data=data)
-
-            else:
-                serializer = UserAgentSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(
-                    {"success":True},
-                    status=status.HTTP_201_CREATED,
-                    content_type='application/json')
-            data = error_data(serializer)
+        if agent_id == "":
             return Response(
-                data,
-                status=status.HTTP_400_BAD_REQUEST,
+                {"success":True},
+                status=status.HTTP_200_OK,
                 content_type='application/json')
+        else:
+            try:
+                query = UserAgent.objects.filter(user=user_id)
+                if len(query) > 0:
+                    for obj in query:
+                        model = obj
+                        if agent_id == "":
+                            model.delete()
+                            return Response(
+                                {"success":True, "message":"UserAgent deleted"},
+                                status=status.HTTP_200_OK,
+                                content_type='application/json')
 
-        except Agent.DoesNotExist:
-            data = {
-                'success': False,
-                'message': 'El agente se borro del servidor de telefonía, intente con otro agente'
-            }
-            return Response(data, status=status.HTTP_200_OK, content_type='application/json')
+                        serializer = UserAgentSerializer(instance=model, data=data)
+
+                else:
+                    serializer = UserAgentSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(
+                        {"success":True},
+                        status=status.HTTP_201_CREATED,
+                        content_type='application/json')
+                data = error_data(serializer)
+                return Response(
+                    data,
+                    status=status.HTTP_400_BAD_REQUEST,
+                    content_type='application/json')
+
+            except Agent.DoesNotExist:
+                data = {
+                    'success': False,
+                    'message': 'El agente se borro del servidor de telefonía, intente con otro agente'
+                }
+                return Response(data, status=status.HTTP_200_OK, content_type='application/json')
 
     return PermissionValidation.error_response_webservice(validation, request)
 

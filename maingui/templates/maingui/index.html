@@ -108,10 +108,17 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{username}}</span>
+                            {% if username == "" %}
+                            <a class="nav-link" href="{% url 'login' %}" id="loginLink">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> Login </span>
                                 <img class="img-profile rounded-circle" src="{% static 'maingui/img/user.png' %}">
                             </a>
+                            {% else %}
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{username}} </span>
+                                <img class="img-profile rounded-circle" src="{% static 'maingui/img/user.png' %}">
+                            </a>
+                            {% endif %}
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{% url 'view_my_profile' %}">
