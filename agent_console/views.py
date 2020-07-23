@@ -7,6 +7,7 @@ def get_actions():
     actions = [
         {"name": "form_user_agent", "label": "Formulario para usuario con agente"},
         {"name": "agent_console", "label": "Vista de la consola principal del agente"},
+        {"name": "options_form", "label": "Opciones de consola de agente"},
     ]
     return actions
 
