@@ -57,7 +57,7 @@ def agent_console(request):
 def options_form(request):
     "Returns the rendered template for the given user."
     permission_obj = PermissionValidation(request)
-    validation = permission_obj.validate('agent_console')
+    validation = permission_obj.validate('options_form')
     if validation['status']:
         data = {
             "success": "True",
