@@ -52,7 +52,7 @@ function redirectToCrm(cedula, phone, extension, llamada_id){
         success: function(result){
             if(result.success){
                 var documento = "&documento=" + cedula;
-                var telefono = "&telfono=" + phone;
+                var telefono = "&telefono=" + phone;
                 var ext = "&extension=" + extension;
                 var llamada = "&llamada_id=" + llamada_id;
                 var url = result.url + documento + telefono + ext + llamada;
