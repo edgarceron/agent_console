@@ -57,7 +57,13 @@ function redirectToCrm(cedula, phone, extension, llamada_id){
                 var llamada = "&llamada_id=" + llamada_id;
                 var url = result.url + documento + telefono + ext + llamada;
                 setTimeout(function(){ 
-                    $(location).attr('href', url);
+                    var win = window.open(url, '_blank');
+                    if (win) {
+                        win.focus();
+                    } else {
+                        alert('Por favor permita las ventanas emergentes para esta pagina');
+                    }
+                    //$(location).attr('href', url);
                 }, 2000);
             }
             else{
