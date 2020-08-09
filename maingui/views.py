@@ -22,7 +22,7 @@ def login(request):
             request,
             'maingui/login.html',
             {
-                'year': str(now.year)
+                'year': str(now.year) + '@'
             }
         )
     return redirect('index')
