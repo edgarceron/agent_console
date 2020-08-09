@@ -20,13 +20,18 @@ function getAgentState(agent, previous_state, previous_call){
                         previous_call = result.llamada_id;
                         $('#lblPhone').html(result.phone);
                         $('#lblCedula').html(result.cedula);
-                        $('#successModal').modal('toggle');
+                        $('#successModal').modal('show');
                         $('#successModal').modal({backdrop:'static', keyboard:false}); 
                         redirectToCrm(
                             result.cedula,
                             result.phone,
                             result.extension,
                             result.llamada_id);
+                        setTimeout(function(){ 
+                            $('#successModal').modal('hide');
+                            $('#lblPhone').html("");
+                            $('#lblCedula').html("");
+                        }, 5000);
                     }
                 }
             },

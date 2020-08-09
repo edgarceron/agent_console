@@ -1,5 +1,6 @@
 """ Contains the views for the maingui module"""
-import datetime
+import pytz
+from datetime import datetime
 from django.shortcuts import render, redirect
 from users.permission_validation import PermissionValidation
 
@@ -13,8 +14,10 @@ def index(request):
 def login(request):
     """ Returns the render for the login page"""
     permission_obj = PermissionValidation(request)
-    if permission_obj.login_session is None:
-        now = datetime.datetime.now()
+    timezone = pytz.timezone("America/Bogota")
+    date_aware = timezone.localize(datetime.now())
+    if permission_obj.login_session is None or permission_obj.login_session.life < date_aware:
+        now = datetime.now()
         return render(
             request,
             'maingui/login.html',
