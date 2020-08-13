@@ -61,6 +61,7 @@ function redirectToCrm(cedula, phone, extension, llamada_id){
                 var ext = "&extension=" + extension;
                 var llamada = "&llamada_id=" + llamada_id;
                 var url = result.url + documento + telefono + ext + llamada;
+				console.log(url);
                 setTimeout(function(){ 
                     var win = window.open(url, '_blank');
                     if (win) {
