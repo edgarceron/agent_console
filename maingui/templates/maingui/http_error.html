@@ -8,13 +8,17 @@
 
 {% endblock %}
 {% block content %}
-<div class="row text-dark">
-    <div class="col-md-12">
-        <h1><span class="fas fa-fw fa-times text-danger"></span>Error {{error}}</h1>
-        <p class="text-break font-weight-bold">{{ message }}</p>
-    </div>
-</div>
 
+<div class="text-center">
+    <div class="error mx-auto" data-text="{{error}}">{{error}}</div>
+    <p class="lead text-gray-800 mb-5">{{ message }}</p>
+    <p class="text-gray-500 mb-0">Parece que te has encontrado con un error...</p>
+    {% if error == 401 %}
+    <a href="{% url 'login' %}">&larr; Ir al login</a>
+    {% else %}
+    <a href="{% url 'index' %}">&larr; Volver al inicio</a>
+    {% endif %}
+</div>
 
 {% endblock %}
 {% block javascript %}
